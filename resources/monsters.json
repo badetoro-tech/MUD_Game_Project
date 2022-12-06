@@ -1,0 +1,7 @@
+{
+  "goblin": {"attack": 3, "defense": 5, "health": 40, "location":  [[4,51], [5,56]]},
+  "orc": {"attack": 8, "defense": 6, "health": 70, "location":  [[4,58]]},
+  "ogre": {"attack": 10, "defense": 10, "health": 90, "location":  []},
+  "troll": {"attack": 3, "defense": 16, "health": 100, "location":  []},
+  "dragon": {"attack": 15, "defense": 15, "health": 150, "location":  []}
+}

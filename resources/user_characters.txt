@@ -1,0 +1,1 @@
+[{"username": "badetoro", "data": {"char_name": "alex", "colour": "red", "health": 180, "attack power": 13, "weapon": "revolver", "weapon_att": 8, "weapon_def": 6, "location": [0, 50], "orientation": 0, "score": 0}}]

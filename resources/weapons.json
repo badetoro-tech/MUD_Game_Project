@@ -1,0 +1,6 @@
+{
+    "revolver": {"attack": 8, "defense": 6},
+    "pistol": {"attack": 6, "defense": 7},
+    "laser gun": {"attack": 10, "defense": 4},
+    "machine gun": {"attack": 14, "defense": 2}
+}
