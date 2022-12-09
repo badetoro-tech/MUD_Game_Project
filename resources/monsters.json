@@ -1,7 +1,13 @@
-{
-  "goblin": {"attack": 3, "defense": 5, "health": 40, "location":  [[4,51], [5,56]]},
-  "orc": {"attack": 8, "defense": 6, "health": 70, "location":  [[4,58]]},
-  "ogre": {"attack": 10, "defense": 10, "health": 90, "location":  []},
-  "troll": {"attack": 3, "defense": 16, "health": 100, "location":  []},
-  "dragon": {"attack": 15, "defense": 15, "health": 150, "location":  []}
-}
+[
+  {
+  "goblin": {"attack": 10, "defence": 5, "health": 50, "location":  [[0,2],[2,5],[6,7],[3,4]]},
+  "orc": {"attack": 12, "defence": 6, "health": 70, "location":  [[5,7],[10,9]]},
+  "ogre": {"attack": 16, "defence": 10, "health": 90, "location":  [[4,4]]},
+  "troll": {"attack": 8, "defence": 16, "health": 100, "location":  [[7,8]]},
+  "dragon": {"attack": 20, "defence": 15, "health": 150, "location":  [[8,14]]}
+  },
+  {
+  "health pack": {"boost": 15, "location": [[2, 5]]},
+  "weapon magazines": {"boost": 3, "location": [[0, 4]]}
+  }
+]

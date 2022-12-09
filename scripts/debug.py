@@ -5,5 +5,5 @@ DEBUG = 0
 
 def print_debug(message, level):
     if level <= DEBUG:
-        print("DEBUG:: ")
-        pprint(message)
+        print(f"DEBUG:: {message}")
+        # pprint(message)

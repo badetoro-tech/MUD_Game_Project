@@ -41,6 +41,7 @@ def initiate_game():
 
 def start_game():
     check_for_account_profile_file()
+    check_for_top_scorers_file()
     check_for_user_char_file()
     game_state = True
     while game_state:
@@ -59,18 +60,21 @@ def start_game():
             while check_acct_avail:
                 check_acct_avail = user_acct.check_if_account_exists('n')
             user_acct.create_user()
-            user_acct.load_user()
-            game_state = False
+            game_state = user_acct.load_user()
+            # return game_state
             break
+
         elif g_start.lower() == "l":
             print("You will be required to enter your USER ACCOUNT name...")
             user_acct.enter_username()
             check_acct_avail = user_acct.check_if_account_exists('l')
-            while check_acct_avail:
+            while check_acct_avail[0] and check_acct_avail[1] != 'exit':
                 check_acct_avail = user_acct.check_if_account_exists('l')
-            user_acct.load_user()
-            game_state = False
-            break
+                print_debug(f'***********: {check_acct_avail}', 3)
+            if check_acct_avail[1] != 'exit':
+                user_acct.load_user()
+            print('\n\n')
+
         elif g_start.lower() == "exit":
             print("We are sorry to see you go. Exiting the game ...")
             break

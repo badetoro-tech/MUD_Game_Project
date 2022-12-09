@@ -4,22 +4,43 @@ from scripts.user_account import *
 from scripts.game_play import *
 from scripts.monsters import *
 
+game_char = {"username": 'Test Player',
+             "data": {
+                 "char_name": "Character Name",
+                 "colour": "Red & Black",
+                 "health": [100, 100],
+                 "attack power": 5,
+                 "weapon": "gun",
+                 "weapon_att": 10,
+                 "weapon_def": 10,
+                 "armour": "shield",
+                 "armour_att": 1,
+                 "armour_def": 1,
+                 "location": [12, 12],
+                 "orientation": 0,
+                 "health_booster": 0,
+                 "attack_booster": 0,
+                 "defence_booster": 0,
+                 "steps": 0,
+                 "score": 0},
+             }
+
 
 class TestUser(unittest.TestCase):
     def setUp(self):
         """Initiate parameters for unit testing"""
         self.user = UserAccount()
-        self.gameplay = GamePlay()
+        self.gameplay = GamePlay(game_char)
         self.monsters = Monsters()
         self.fight_monster = Fight()
-        self.user.username = 'testuser'
+        self.user.username = game_char['username']
         self.user.password = 'password'
         self.user.hashed_password = '6d746f5e7c4cfb1583e9ca5050daa8b7fe4badbbb5ae7ff3fcf022487166f8da'
 
 
 class TestGamePlay(TestUser):
     def test_turn_left(self):
-        """Test to ensure that the gamer character face the correct direction when turning left"""
+        """Test to ensure that the gamer character face the correct direction when turning right"""
         self.assertEqual(self.gameplay.turn_direction(0, 'right'), 90)
         self.assertEqual(self.gameplay.turn_direction(90, 'right'), 180)
         self.assertEqual(self.gameplay.turn_direction(180, 'right'), 270)
@@ -33,7 +54,7 @@ class TestGamePlay(TestUser):
         self.assertEqual(self.gameplay.turn_direction(270, 'round'), 90)
 
     def test_turn_right(self):
-        """Test to ensure that the gamer character face the correct direction when turning right"""
+        """Test to ensure that the gamer character face the correct direction when turning left"""
         self.assertEqual(self.gameplay.turn_direction(0, 'left'), 270)
         self.assertEqual(self.gameplay.turn_direction(90, 'left'), 0)
         self.assertEqual(self.gameplay.turn_direction(180, 'left'), 90)
@@ -89,12 +110,12 @@ class TestPasswordHash(TestUser):
 
     def test_validate_correct_password(self):
         """Test to ensure that the checking of hashed password against encrypted password works"""
-        self.assertEqual(self.user.check_password(self.user.hashed_password), True)
+        self.assertEqual(self.user.validate_password(self.user.hashed_password), True)
 
     def test_validate_wrong_password(self):
         """Test to ensure that the checking of plain-text password against encrypted password fails"""
         self.test_password_hash()
-        self.assertEqual(self.user.check_password(self.user.password), False)
+        self.assertEqual(self.user.validate_password(self.user.password), False)
 
 
 class TestMonsters(TestUser):

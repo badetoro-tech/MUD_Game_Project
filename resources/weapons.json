@@ -1,6 +1,30 @@
-{
-    "revolver": {"attack": 8, "defense": 6},
-    "pistol": {"attack": 6, "defense": 7},
-    "laser gun": {"attack": 10, "defense": 4},
-    "machine gun": {"attack": 14, "defense": 2}
-}
+[
+  {
+    "revolver": {
+      "attack": 8,
+      "defence": 6
+    },
+    "pistol": {
+      "attack": 6,
+      "defence": 7
+    },
+    "laser gun": {
+      "attack": 10,
+      "defence": 4
+    },
+    "machine gun": {
+      "attack": 14,
+      "defence": 2
+    }
+  },
+  {
+    "plasma shield": {
+      "attack": 2,
+      "defence": 12
+    },
+    "body armour": {
+      "attack": 4,
+      "defence": 9
+    }
+  }
+]
