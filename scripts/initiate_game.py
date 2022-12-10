@@ -57,7 +57,7 @@ def start_game():
             print("You are about to create your account...")
             user_acct.enter_username()
             check_acct_avail = user_acct.check_if_account_exists('n')
-            while check_acct_avail:
+            while check_acct_avail[0]:
                 check_acct_avail = user_acct.check_if_account_exists('n')
             user_acct.create_user()
             game_state = user_acct.load_user()

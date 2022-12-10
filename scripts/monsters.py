@@ -59,22 +59,23 @@ class Fight:
         # self.monster_attack = 0
         # self.monster_health = 0
         self.monster = Monsters()
-        # self.meet_monster = ''
+        # self.obj_location = []
 
-    def check_for_monsters(self, current_location, prn=1):
-        # checking for monster's location
+    def check_for_monsters(self, character, current_location, prn=1):
+        """This method is to check and confirm that a monster is located here"""
         for monster in self.monster.monsters_dict:
             if current_location in self.monster.monsters_dict[monster]["location"]:
-                if prn != 0:
-                    msg = f"You have just encountered a(n) {monster}"
-                    print(format_font(msg, 'bg', 'red'))
+                if current_location not in character['data']['expended_obj']:
+                    if prn != 0:
+                        msg = f"You have just encountered a(n) {monster}"
+                        print(format_font(msg, 'bg', 'red'))
                     self.monster.species = monster
                     self.monster.monster(monster)
-                return True
+                    return True
         return False
 
     def fight_monster(self, current_location, character, prn=0):
-        check_monster = self.check_for_monsters(current_location, prn)
+        check_monster = self.check_for_monsters(character, current_location, prn)
         max_monster_health = self.monster.health
         if check_monster:
             end_fight = False
@@ -100,6 +101,7 @@ class Fight:
                     f'{self.monster.health}/{m_max_health} health.')
             if self.monster.health <= 0:
                 b_print(f'You have successfully defeated the {self.monster.species}.')
+                character['data']['expended_obj'].append(character['data']['location'])
                 return True
         else:
             g_print(f'Your attack missed the {self.monster.species}. The monster still has '
@@ -130,23 +132,27 @@ class Fight:
         print_debug(self.monster.boosters_dict, 5)
         for booster in self.monster.boosters_dict:
             if current_location in self.monster.boosters_dict[booster]["location"]:
-                if prn != 0:
-                    msg = f"You have just picked up a booster pack: {booster}"
-                    print(format_font(msg, 'bg', 'red'))
-                if booster.lower() == "health pack":
-                    print_debug('Getting a health pack', 5)
-                    character['data']['health_booster'] += int(self.monster.boosters_dict[booster]["boost"])
-                    character['data']['health'][1] += int(self.monster.boosters_dict[booster]["boost"])
-                    character['data']['health'][0] = character['data']['health'][1]
-                    msg = f"Your health has been restored to a maximum value of {character['data']['health'][1]}"
-                    print(format_font(msg, 'bg', 'red'))
+                if current_location not in character['data']['expended_obj']:
+                    if prn != 0:
+                        msg = f"You have just picked up a booster pack: {booster}"
+                        print(format_font(msg, 'bg', 'red'))
 
-                if booster.lower() == "weapon magazines":
-                    print_debug('Getting a weapon magazines', 5)
-                    character['data']['attack_booster'] += int(self.monster.boosters_dict[booster]["boost"])
-                    character['data']['attack power'] += int(self.monster.boosters_dict[booster]["boost"])
-                    msg = f"Your attack power has been increased by {self.monster.boosters_dict[booster]['boost']}"
-                    print(format_font(msg, 'bg', 'red'))
+                    if booster.lower() == "health pack":
+                        print_debug('Getting a health pack', 5)
+                        character['data']['health_booster'] += int(self.monster.boosters_dict[booster]["boost"])
+                        character['data']['health'][1] += int(self.monster.boosters_dict[booster]["boost"])
+                        character['data']['health'][0] = character['data']['health'][1]
+                        msg = f"Your health has been restored to a maximum value of {character['data']['health'][1]}"
+                        print(format_font(msg, 'bg', 'red'))
+
+                    if booster.lower() == "weapon magazines":
+                        print_debug('Getting a weapon magazines', 5)
+                        character['data']['attack_booster'] += int(self.monster.boosters_dict[booster]["boost"])
+                        character['data']['attack power'] += int(self.monster.boosters_dict[booster]["boost"])
+                        msg = f"Your attack power has been increased by {self.monster.boosters_dict[booster]['boost']}"
+                        print(format_font(msg, 'bg', 'red'))
+
+                    character['data']['expended_obj'].append(character['data']['location'])
 
                 return True
         return False

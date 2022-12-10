@@ -130,6 +130,12 @@ class UserAccount:
                   f"or {fg.red + 'exit' + fg.rs} to go to the previous menu.")
             username = self.enter_username()
             return [True, username]
+        # elif self.username not in usernames and load_state == 'n':
+        #     pwd_check_success = False
+        #     while not pwd_check_success:
+        #         self.enter_password()
+        #         hashed_pwd = passwords[usernames.index(self.username)]
+        #         pwd_check_success = self.validate_password(hashed_pwd)
         elif self.username not in usernames and load_state == 'l':
             print(f"Player Account {fg.red + self.username + fg.rs} does not exist. Type in the correct username "
                   f"or {fg.red + 'exit' + fg.rs} to go to the previous menu.")
@@ -210,7 +216,9 @@ class UserAccount:
                                 "attack_booster": 0,
                                 "defence_booster": 0,
                                 "steps": 0,
-                                "score": 0},
+                                "score": 0,
+                                "expended_obj": []
+                            },
                             }
         return player_character
 

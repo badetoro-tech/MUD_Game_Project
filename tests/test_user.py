@@ -16,13 +16,14 @@ game_char = {"username": 'Test Player',
                  "armour": "shield",
                  "armour_att": 1,
                  "armour_def": 1,
-                 "location": [12, 12],
+                 "location": [0, 0],
                  "orientation": 0,
                  "health_booster": 0,
                  "attack_booster": 0,
                  "defence_booster": 0,
                  "steps": 0,
-                 "score": 0},
+                 "score": 0,
+                 "expended_obj": []},
              }
 
 
@@ -39,30 +40,57 @@ class TestUser(unittest.TestCase):
 
 
 class TestGamePlay(TestUser):
-    def test_turn_left(self):
+    def test_turn_right_while_facing_north(self):
         """Test to ensure that the gamer character face the correct direction when turning right"""
         self.assertEqual(self.gameplay.turn_direction(0, 'right'), 90)
+
+    def test_turn_right_while_facing_east(self):
+        """Test to ensure that the gamer character face the correct direction when turning right"""
         self.assertEqual(self.gameplay.turn_direction(90, 'right'), 180)
+
+    def test_turn_right_while_facing_south(self):
+        """Test to ensure that the gamer character face the correct direction when turning right"""
         self.assertEqual(self.gameplay.turn_direction(180, 'right'), 270)
+
+    def test_turn_right_while_facing_west(self):
+        """Test to ensure that the gamer character face the correct direction when turning right"""
         self.assertEqual(self.gameplay.turn_direction(270, 'right'), 0)
 
-    def test_turn_round(self):
+    def test_turn_round_while_facing_north(self):
         """Test to ensure that the gamer character face the correct direction when turning round"""
         self.assertEqual(self.gameplay.turn_direction(0, 'round'), 180)
+
+    def test_turn_round_while_facing_east(self):
+        """Test to ensure that the gamer character face the correct direction when turning round"""
         self.assertEqual(self.gameplay.turn_direction(90, 'round'), 270)
+
+    def test_turn_round_while_facing_south(self):
+        """Test to ensure that the gamer character face the correct direction when turning round"""
         self.assertEqual(self.gameplay.turn_direction(180, 'round'), 0)
+
+    def test_turn_round_while_facing_west(self):
+        """Test to ensure that the gamer character face the correct direction when turning round"""
         self.assertEqual(self.gameplay.turn_direction(270, 'round'), 90)
 
-    def test_turn_right(self):
+    def test_turn_left_while_facing_north(self):
         """Test to ensure that the gamer character face the correct direction when turning left"""
         self.assertEqual(self.gameplay.turn_direction(0, 'left'), 270)
+
+    def test_turn_left_while_facing_east(self):
+        """Test to ensure that the gamer character face the correct direction when turning left"""
         self.assertEqual(self.gameplay.turn_direction(90, 'left'), 0)
+
+    def test_turn_left_while_facing_south(self):
+        """Test to ensure that the gamer character face the correct direction when turning left"""
         self.assertEqual(self.gameplay.turn_direction(180, 'left'), 90)
+
+    def test_turn_left_while_facing_west(self):
+        """Test to ensure that the gamer character face the correct direction when turning left"""
         self.assertEqual(self.gameplay.turn_direction(270, 'left'), 180)
 
     def test_move_forward_at_beginning(self):
         """Test to ensure the character can move forward at the beginning"""
-        self.assertEqual(self.gameplay.move_forward(self.gameplay.orientation, self.gameplay.current_location), [1, 50])
+        self.assertEqual(self.gameplay.move_forward(0, [0, 0]), [0, 1])
 
     def test_move_forward_after_left_turn(self):
         """Test to ensure the character cannot turn left and move forward at the beginning"""
@@ -76,12 +104,12 @@ class TestGamePlay(TestUser):
 
     def test_move_forward_then_turn(self):
         """Test to ensure the character move foreward 4 times before turning """
-        self.gameplay.move_forward(self.gameplay.orientation, self.gameplay.current_location)
-        self.gameplay.move_forward(self.gameplay.orientation, self.gameplay.current_location)
-        self.gameplay.move_forward(self.gameplay.orientation, self.gameplay.current_location)
-        self.gameplay.move_forward(self.gameplay.orientation, self.gameplay.current_location)
+        self.gameplay.move_forward(0, [0, 0])
+        self.gameplay.move_forward(0, self.gameplay.current_location)
+        self.gameplay.move_forward(0, self.gameplay.current_location)
+        self.gameplay.move_forward(0, self.gameplay.current_location)
         self.gameplay.turn_direction(0, 'right')
-        self.assertEqual(self.gameplay.move_forward(self.gameplay.orientation, self.gameplay.current_location), [4, 51])
+        self.assertEqual(self.gameplay.move_forward(self.gameplay.orientation, self.gameplay.current_location), [1, 4])
 
     def test_orientation_to_north(self):
         """Test to check the starting character orientation"""
@@ -121,21 +149,21 @@ class TestPasswordHash(TestUser):
 class TestMonsters(TestUser):
     def test_monster_orc_attack(self):
         self.monsters.monster("orc")
-        self.assertEqual(self.monsters.attack, 8)
+        self.assertEqual(self.monsters.attack, 12)
 
     def test_monster_orc_defense(self):
         self.monsters.monster("orc")
-        self.assertEqual(self.monsters.defense, 6)
+        self.assertEqual(self.monsters.defence, 6)
 
     def test_monster_orc_health(self):
         self.monsters.monster("orc")
         self.assertEqual(self.monsters.health, 70)
 
     def test_confirm_monster_location(self):
-        self.assertEqual(self.fight_monster.check_for_monsters([4, 51]), True)
+        self.assertEqual(self.fight_monster.check_for_monsters(game_char, [0, 2]), True)
 
     def test_confirm_monster_location_invalid(self):
-        self.assertEqual(self.fight_monster.check_for_monsters([0, 50]), False)
+        self.assertEqual(self.fight_monster.check_for_monsters(game_char,[0, 3]), False)
 
 
 if __name__ == '__main__':

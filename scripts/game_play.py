@@ -49,7 +49,8 @@ def load_story():
 def help_msg():
     print('The following are the possible controls you need to be aware of to play the game.')
     controls = '(Move) Forward\n(Turn) Left\n(Turn) Right\n(Turn) Round\nAttack\nHeal (Recover Health)' \
-               '\nSave (To save your current game)\nLoad (To load your last saved game) \nExit (To quit the game)' \
+               '\nSave (To save your current game)\nLoad (To load your last saved game)\nCustomize (Character )' \
+               '\nExit (To quit the game)' \
                '\nStatus (To view current Status)\nMap\nTop (See top 10 scores)\nHelp (To view controls again)\n'
     print(format_font(controls, 'fg', 'orange'))
 
@@ -83,6 +84,7 @@ def heal_character(character):
 class GamePlay:
 
     def __init__(self, character):
+        self.character_update = None
         self.character = character
         self.orientation = 0
         self.face_direction = ''
@@ -186,7 +188,7 @@ class GamePlay:
                 self.move_forward(self.orientation, self.current_location)
                 self.character['data']['location'] = self.current_location
                 fight.check_for_boosters(self.character, self.current_location)
-                check = fight.check_for_monsters(self.current_location)
+                check = fight.check_for_monsters(self.character, self.current_location)
                 if check:
                     choice = input(format_font("Do you plan to attack or run. Type 'Attack' to attack or any "
                                                "key to run: ", 'fg', 'orange'))
@@ -238,3 +240,22 @@ class GamePlay:
 
             elif g_play == 'top':
                 top_scorers()
+
+            elif g_play == 'customize':
+                self.customize_character()
+                return ['save', self.character]
+
+    def customize_character(self):
+        """This method is used to customize the character after the initial customization"""
+        print(format_font('You are about to customize your character.', 'fg', 'orange'))
+        time.sleep(1)
+        name_chk = input(f"Your Character's name is {format_font(self.character['data']['char_name'], 'fg', 'red')}. "
+                         f"Would you like to change it? Type Y(es) or N(o)\n")
+        if name_chk.lower() == 'y':
+            self.character['data']['char_name'] = input(f"Enter your new name: \n")
+
+        time.sleep(0.5)
+        col_chk = input(f"Your Character's colour is {format_font(self.character['data']['colour'], 'fg', 'red')}. "
+                        f"Would you like to change it? Type Y(es) or N(o)\n")
+        if col_chk.lower() == 'y':
+            self.character['data']['colour'] = input(f"Enter your new colour: \n")

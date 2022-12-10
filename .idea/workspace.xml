@@ -8,21 +8,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29220392-35cb-49ec-905c-58fcbcfcc0e9" name="Changes" comment="Draft Version 0.1">
-      <change afterPath="$PROJECT_DIR$/scripts/scoring.py" afterDir="false" />
+    <list default="true" id="29220392-35cb-49ec-905c-58fcbcfcc0e9" name="Changes" comment="Draft Version 0.2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/game_map.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/game_map.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/game_map.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/monsters.json" beforeDir="false" afterPath="$PROJECT_DIR$/resources/monsters.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/user_accounts.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/user_characters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/weapons.json" beforeDir="false" afterPath="$PROJECT_DIR$/resources/weapons.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/debug.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/game_play.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/game_play.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/initiate_game.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/initiate_game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/monsters.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/monsters.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/user_account.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/user_account.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/venv/pyvenv.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/venv/pyvenv.cfg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_user.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_user.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +61,7 @@
       <recent name="C:\Users\badet\OneDrive\Documents\PycharmProjects\Assessment 002\" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in test_user.py">
+  <component name="RunManager" selected="Python tests.Unittests in tests">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MUD Game Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -142,8 +134,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Unittests in test_user.py" />
         <item itemvalue="Python tests.Unittests in tests" />
+        <item itemvalue="Python tests.Unittests in test_user.py" />
         <item itemvalue="Python.scoring" />
         <item itemvalue="Python.main" />
       </list>
@@ -165,7 +157,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670290327095</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Draft Version 0.2">
+      <created>1670618313584</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1670618313585</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -181,7 +180,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Draft Version 0.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Draft Version 0.1" />
+    <MESSAGE value="Draft Version 0.2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Draft Version 0.2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
