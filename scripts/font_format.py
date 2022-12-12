@@ -3,6 +3,13 @@ from sty import Style, RgbFg, RgbBg
 
 
 def format_font(message, font_color_type, color):
+    """
+    Used to format the font displayed by colour
+    :param message: The message to be formatted
+    :param font_color_type: Used to format the font (accepts 'fg') or background (accepts 'bg')
+    :param color: colour of the font
+    :return: the colour-formatted font
+    """
     cl_msg = ''
     if font_color_type == 'ef':
         cl_msg = ef.italic + message + rs.italic
@@ -31,16 +38,3 @@ def format_font(message, font_color_type, color):
     return cl_msg
 
 
-# foo = fg.red + 'This is red text!' + fg.rs
-# bar = bg.blue + 'This has a blue background!' + bg.rs
-# baz = ef.italic + 'This is italic text' + rs.italic
-#
-# # Add custom colors:
-# fg.orange = Style(RgbFg(255, 150, 50))
-#
-# buf = fg.orange + 'Yay, Im orange.' + fg.rs
-#
-# print(foo, bar, baz, buf, sep='\n')
-#
-# msg = 'This is a text of color'
-# print(format_font(msg, 'fg', 'red'))

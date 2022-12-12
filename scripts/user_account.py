@@ -3,15 +3,16 @@ from pathlib import Path
 import pandas as pd
 import csv
 import hashlib  # , uuid
-from debug import print_debug
+from debug import print_debug  # Used to generate debug information for further code analysis
 from sty import fg
 import json
 from pprint import pprint
-from font_format import format_font
+from font_format import format_font  # Used to format texts with colours
 from game_play import GamePlay
 from getpass import getpass
 import time
 from scoring import *
+import os
 
 USER_PROFILE_FILE = "../resources/user_accounts.csv"
 TOP_SCORERS_FILE = "../resources/top_scorers.csv"
@@ -21,6 +22,10 @@ WEAPONS = "../resources/weapons.json"
 
 
 def check_for_account_profile_file():
+    """
+    This function checks and load the account profile file. If the file does not exist, it creates it.
+    :return:
+    """
     path = Path(USER_PROFILE_FILE)
     # if account profile file does not exist, create the new account
     if not path.is_file():
@@ -34,6 +39,10 @@ def check_for_account_profile_file():
 
 
 def check_for_top_scorers_file():
+    """
+    This function checks and load the top scores csv file. If the file does not exist, it creates it.
+    :return:
+    """
     path = Path(TOP_SCORERS_FILE)
     # if account profile file does not exist, create the new account
     if not path.is_file():
@@ -47,6 +56,10 @@ def check_for_top_scorers_file():
 
 
 def check_for_user_char_file():
+    """
+    This function checks and load the user-created characters file. If the file does not exist, it creates it.
+    :return:
+    """
     path = Path(USER_CHARACTERS_FILE)
     # if user character files does not exist, create a new file
     if not path.is_file():
@@ -54,6 +67,15 @@ def check_for_user_char_file():
             game_characters = []
             print_debug(f'The user character file does not exist. Creating the file in path: {USER_CHARACTERS_FILE}', 2)
             file.write(str(game_characters))
+
+
+def is_pycharm():
+    """
+    This function checks if Pycharm is used to run the game. Some libraries like getpass does not seem to work in
+    Pycharm
+    :return:
+    """
+    return os.getenv("PYCHARM_HOSTED") is not None
 
 
 class UserAccount:
@@ -72,12 +94,22 @@ class UserAccount:
         # self.sc = ScoreBoard()
 
     def hash_password(self, password):
+        """
+        This method accepts plain-text password and encrypt by hashing it
+        :param password: plain-text password
+        :return: hashed password
+        """
         print_debug(f'The plaintext password is: {password}', 2)
         self.hashed_password = hashlib.sha256(str(self.username + password + SALT).encode('utf-8')).hexdigest()
         print_debug(f'The hashed password is: {self.hashed_password}', 2)
         return self.hashed_password
 
     def validate_password(self, hashed_pass):
+        """
+        This is used to validate the entered and hashed password against the stored copy
+        :param hashed_pass: hashed password typed in
+        :return: True if validated, else False
+        """
         if self.hashed_password == hashed_pass:
             print('Your password has been validated successfully')
             return True
@@ -86,6 +118,10 @@ class UserAccount:
             return False
 
     def enter_username(self):
+        """
+        Used to enter username as input
+        :return: username entered
+        """
         # print_debug(f"User account input in enter_username() is: {user_acct_input}", 3)
         user_acct_input = ''
         cnt = 0
@@ -100,17 +136,26 @@ class UserAccount:
         return self.username
 
     def enter_password(self):
+        """
+        Used to input typed password as requested. Ensured that the password is not less than characters
+        :return: hashed password
+        """
         pass_input = ''
         while len(pass_input) < 4:
-            try:
-                pass_input = getpass('Enter your account password (minimum of 4 characters): \n')
-            except:
+            # print("YES" if is_pycharm() else "NO")
+            if is_pycharm():
                 pass_input = input('Enter your account password (minimum of 4 characters): \n')
+            else:
+                pass_input = getpass('Enter your account password (minimum of 4 characters): \n')
 
         self.hashed_password = self.hash_password(pass_input)
         return self.hashed_password
 
     def create_user(self):
+        """
+        Used to create user and append into the user profile file
+        :return:
+        """
         hashed_pass = self.enter_password()
         user_data = [self.username, hashed_pass]
         print_debug(f'The username and hashed password is: {user_data}', 2)
@@ -120,6 +165,12 @@ class UserAccount:
         print(f"Player Account {self.red_username} has been created successfully.")
 
     def check_if_account_exists(self, load_state):
+        """
+        This method checks if the account has been created before. If it exists, it returns True along with the
+        username, else returns False
+        :param load_state: accepts 'n' for new accounts, 'l' for existing accounts
+        :return: List of True/False along with the username
+        """
         content = pd.read_csv(USER_PROFILE_FILE)
         usernames = content.username.tolist()
         passwords = content.password.tolist()
@@ -151,6 +202,10 @@ class UserAccount:
         return [False, '']
 
     def load_user(self):
+        """
+        This loads the user character and the game itself.
+        :return:
+        """
 
         game_status = {}
         print(f"Loading user character...")
@@ -172,10 +227,19 @@ class UserAccount:
                 print('Save Successful...')
             elif game_status[0] == 'load':
                 self.load_user()
+            elif game_status[0] == 'end_game':
+                self.save_game_data(game_status[1])
+                print('\n\nTOP SCORERS\n***********')
+                top_scorers()
+                break
 
         return play_game
 
     def user_characters(self):
+        """
+        This is used to check, fetch and initiate the user character from the game file.
+        :return:
+        """
         game_data = self.load_game_data()
         print_debug(f'Game Data: {game_data}', 5)
         [print_debug(d['username'], 5) for d in game_data]
@@ -198,6 +262,10 @@ class UserAccount:
             self.character = gamer_data
 
     def initiate_characters(self):
+        """
+        This is used to create a template for all new game characters.
+        :return: template for a game character.
+        """
         player_character = {"username": self.username,
                             "data": {
                                 "char_name": "",
@@ -298,6 +366,10 @@ class UserAccount:
         self.update_character()
 
     def update_character(self):
+        """
+        This is used to update some characteristics of a game character during creation.
+        :return:
+        """
         print('Updating the character customisation.')
         v_cur_health = self.character['data']['health'][0] - self.character['data']['health'][1] + 100
         v_cur_health += (self.character['data']['weapon_def'] * 5) + (self.character['data']['armour_def'] * 5)
@@ -314,6 +386,10 @@ class UserAccount:
         self.save_game_data(self.character)
 
     def load_game_data(self):
+        """
+        This is used to load the game data file from the user_characters.json
+        :return: game data
+        """
         try:
             with open(USER_CHARACTERS_FILE, 'r') as file:
                 self.data = json.load(file)
@@ -322,6 +398,11 @@ class UserAccount:
         return self.data
 
     def save_game_data(self, character):
+        """
+        This is used to save the game data file into the user_characters.json
+        :param character: the gamer character
+        :return:
+        """
         # pprint(character)
         # pprint(self.data)
 

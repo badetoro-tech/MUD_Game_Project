@@ -11,12 +11,18 @@ from scoring import top_scorers
 GAME_MAP = "../resources/game_map.txt"
 OBSTACLE = ["mountain", "valley", "lake", "wall", "old building"]
 story = "../resources/story.txt"
+beacon = "../resources/beacon.txt"
+the_end = "../resources/the_end.txt"
 monsters = Monsters()
 fight = Fight()
 control_directions = ['turn left', 'left', 'turn right', 'right', 'turn around', 'turn round', 'around', 'round']
 
 
 def load_map():
+    """
+    This function loads the game map
+    :return: contents of the file
+    """
     with open(GAME_MAP, 'r+') as f:
         # # read content from file and remove whitespaces around
         # content = f.read().strip()
@@ -28,6 +34,11 @@ def load_map():
 
 
 def plot_map(char_location):
+    """
+    This function uses the matplotlib library to plot the game map
+    :param char_location: used to plot the gamer's character on the map
+    :return:
+    """
     g_map = load_map()
     x_array = []
     y_array = []
@@ -41,12 +52,31 @@ def plot_map(char_location):
 
 
 def load_story():
+    """
+    Loads the game storyline from a text file (story.txt)
+    :return: contents of the file
+    """
     with open(story, 'r+') as f:
         content = json.load(f)
     return content
 
 
+def load_ascii(path):
+    """
+    Loads contents of files
+    :param path: the path of the file to be loaded
+    :return: contents of the file
+    """
+    with open(path, 'r') as f:
+        content = f.read()
+    return content
+
+
 def help_msg():
+    """
+    Displays the help guide
+    :return:
+    """
     print('The following are the possible controls you need to be aware of to play the game.')
     controls = '(Move) Forward\n(Turn) Left\n(Turn) Right\n(Turn) Round\nAttack\nHeal (Recover Health)' \
                '\nSave (To save your current game)\nLoad (To load your last saved game)\nCustomize (Character )' \
@@ -56,7 +86,12 @@ def help_msg():
 
 
 def heal_character(character):
-    view = [7, 11, 13, 17, 19, 23, 29]
+    """
+    used in the game to heal a character. Animated to display the healing process
+    :param character: the injured game character
+    :return: the healed game character
+    """
+    view = [7, 11, 13]
     print(f'Your current health status is: '
           f'{character["data"]["health"][0]}/{character["data"]["health"][1]}')
     if {character["data"]["health"][0]} == {character["data"]["health"][1]}:
@@ -92,8 +127,20 @@ class GamePlay:
         self.game_map = load_map()
         self.story = load_story()
         self.game_start_flag = 0
+        self.end_game = self.game_map[-1]
 
     def turn_direction(self, orientation, direction):
+        """
+        This method is used to change the direction the game character is facing by using 360 degrees clockwise
+        from the north. This is broken down as
+            0 degree - North
+            90 degrees - East
+            180 degrees - South
+            270 degrees - West
+        :param orientation: current orientation. One of 0, 90, 180, 270
+        :param direction: direction to turn. One of left, (a)round, right
+        :return: new orientation after applying the turn
+        """
         print_debug(f'Old Orientation: {orientation}', 4)
         if direction == 'right':
             orientation = (orientation + 90) % 360
@@ -107,6 +154,11 @@ class GamePlay:
         return orientation
 
     def character_orientation(self, prn=0):
+        """
+        Displays the four cardinal directions based on current orientation. They are North, East, South, and West
+        :param prn: optional: used to display print statement
+        :return: The cardinal direction
+        """
         if self.orientation == 0:
             direction = 'North'
         elif self.orientation == 90:
@@ -121,6 +173,12 @@ class GamePlay:
         return direction
 
     def move_forward(self, orientation, current_location):
+        """
+        Moves the character forward by a map step along the direction faced.
+        :param orientation: Currency Orientation
+        :param current_location: Current location on the map
+        :return: New location on the map
+        """
         x_loc = current_location[0]
         y_loc = current_location[1]
         if orientation == 0:
@@ -143,6 +201,10 @@ class GamePlay:
         return self.current_location
 
     def start_game(self):
+        """
+        Start the main game story
+        :return:
+        """
         self.orientation = self.character['data']['orientation']
         self.current_location = self.character['data']['location']
         if self.current_location == [0, 0]:
@@ -165,14 +227,31 @@ class GamePlay:
             help_msg()
 
         status = 'play'
-        while status not in ('exit', 'save', 'load'):
+        while status not in ('exit', 'save', 'load', 'end_game'):
+            # End Game if character location is equal to the end of the map
+            if self.character['data']['location'] == self.end_game:
+                delay_print(wrap('After a long and arduous journey, you finally arrive at an open field. The beacon '
+                                 'stands in the middle of the field. You walked towards it.\n\n', 100), 0.01)
+                delay_print(load_ascii(beacon), 0.01)
+                time.sleep(1)
+                delay_print(wrap('You took a look at the beacon, and with a deep breath, you turned it to activate it. '
+                                 'A bright light came out like a beam of light shining upwards and there was a huge '
+                                 'earthquake that shook the ground and as fast as it started, everything died down. '
+                                 'The air became clear and all the monsters dissolved into the thin air.', 100), 0.01)
+                time.sleep(1)
+                print('\n\n')
+                delay_print(wrap('In front of you, you saw a chest filled with precious stones. You picked up one of'
+                                 ' the stones, take a look at it and smiled.....\n\n', 100), 0.01)
+                delay_print(load_ascii(the_end), 0.01)
+                return ['end_game', self.character]
+
             msg = 'Input your next action: '
             msg = msg.lower()
             g_play = input(format_font(msg, 'fg', 'orange'))
             rnd_choice = [0, 1, 2, 3, 4, 5]
             if g_play == 'exit':
                 msg = input(wrap(format_font('Are you sure you want to exit? You will lose any unsaved progress. '
-                                             'Type "exit to exit or press any other key to continue: ', 'fg', 'red'),
+                                             'Type "exit" to exit or press any other key to continue: ', 'fg', 'red'),
                                  100))
                 if msg == 'exit':
                     status = msg
@@ -246,7 +325,10 @@ class GamePlay:
                 return ['save', self.character]
 
     def customize_character(self):
-        """This method is used to customize the character after the initial customization"""
+        """
+        This method is used to customize the character after the initial customization
+        :return:
+        """
         print(format_font('You are about to customize your character.', 'fg', 'orange'))
         time.sleep(1)
         name_chk = input(f"Your Character's name is {format_font(self.character['data']['char_name'], 'fg', 'red')}. "

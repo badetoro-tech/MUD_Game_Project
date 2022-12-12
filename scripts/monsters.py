@@ -2,7 +2,6 @@ import json
 import random
 import time
 from debug import print_debug
-
 from font_format import format_font
 
 monster_list_path = "../resources/monsters.json"
@@ -11,24 +10,39 @@ attack_strength = [2, 3, 4]
 
 
 def load_monster_list():
+    """
+    Loads the monsters and booster list files
+    :return: dictionary containing monsters and booster
+    """
     with open(monster_list_path, 'r') as monsters_file:
         monsters_dict = json.load(monsters_file)
     return monsters_dict
 
 
 def r_print(msg):
+    """
+    Using the font_format function, display messages in red
+    :param msg: strings
+    :return: red-coloured strings
+    """
     print(format_font(msg, 'fg', 'red'))
 
 
 def g_print(msg):
+    """
+    Using the font_format function, display messages in green
+    :param msg: strings
+    :return: green-coloured strings
+    """
     print(format_font(msg, 'fg', 'green'))
 
 
-def p_print(msg):
-    print(format_font(msg, 'fg', 'purple'))
-
-
 def b_print(msg):
+    """
+    Using the font_format function, display messages in blue
+    :param msg: strings
+    :return: blue-coloured strings
+    """
     print(format_font(msg, 'fg', 'blue'))
 
 
@@ -62,7 +76,13 @@ class Fight:
         # self.obj_location = []
 
     def check_for_monsters(self, character, current_location, prn=1):
-        """This method is to check and confirm that a monster is located here"""
+        """
+        This method is to check and confirm that a monster is located here current location
+        :param character: The gamer's character
+        :param current_location: Current location of the character
+        :param prn: display print option
+        :return: True if monster found, else False
+        """
         for monster in self.monster.monsters_dict:
             if current_location in self.monster.monsters_dict[monster]["location"]:
                 if current_location not in character['data']['expended_obj']:
@@ -75,6 +95,13 @@ class Fight:
         return False
 
     def fight_monster(self, current_location, character, prn=0):
+        """
+        This simulates a fight between the game character and the non-playable characters (NPC) in the game
+        :param current_location: Current location of the character
+        :param character: The gamer's character
+        :param prn: display print option
+        :return: True if monster found, else False
+        """
         check_monster = self.check_for_monsters(character, current_location, prn)
         max_monster_health = self.monster.health
         if check_monster:
@@ -87,6 +114,14 @@ class Fight:
         return check_monster
 
     def fight_damage(self, character, m_attack, m_curr_health, m_max_health):
+        """
+        Calculate the damages of each of the two opponents attack
+        :param character: The gamer's character
+        :param m_attack: NPC attack strength
+        :param m_curr_health: NPC current health
+        :param m_max_health: NPC Maximum health
+        :return: True if any character is killed, else False
+        """
         attacking = random.choice(attack_key)
         time.sleep(1)
         if attacking == 1:
@@ -127,6 +162,13 @@ class Fight:
         return False
 
     def check_for_boosters(self, character, current_location, prn=1):
+        """
+        This method is to check and confirm that a booster is located here current location
+        :param character: The gamer's character
+        :param current_location: Current location of the character
+        :param prn: display print option
+        :return: True if booster found, else False
+        """
         # checking for boosters' location
         print_debug('booster check entered', 5)
         print_debug(self.monster.boosters_dict, 5)
